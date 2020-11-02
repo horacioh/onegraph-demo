@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Onegraph demo</h1>
+    <form id="myForm" name="myForm">
+      <div>
+        <label for="name">Enter name:</label>
+        <input type="text" id="name" name="name" />
+      </div>
+      <div>
+        <label for="email">Enter email:</label>
+        <input type="email" id="email" name="email" />
+      </div>
+      <div>
+        <label for="website">website:</label>
+        <input type="text" id="website" name="website" />
+      </div>
+      <input type="submit" value="Submit!" />
+    </form>
+  </body>
+  <script>
+    let myForm = document.getElementById("myForm")
+    myForm.addEventListener("submit", submit)
+
+    function submit(event) {
+      event.preventDefault()
+      let _this = this
+      let formData = new FormData(_this)
+      let name = formData.get("name")
+      let email = formData.get("email")
+      let website = formData.get("website")
+
+      fetch(
+        "https://serve.onegraph.com/graphql?app_id=7f8118d6-0951-49f5-b1fb-7646264beb8b",
+        {
+          body: `{"doc_id": "903270e3-55bf-4de3-b416-e8fa8932e5f0", "variables": {"name": "${name}", "email": "${email}", "website": "${website}"} }`,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("RESULT!", data)
+        })
+
+      return false
+    }
+  </script>
+</html>
